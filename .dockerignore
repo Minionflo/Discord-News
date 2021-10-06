@@ -1,7 +1,7 @@
-node_modules/
-package-lock.json
-build.sh
-secret
-README.md
+node_modules
 .gitignore
 .git
+package-lock.json
+build.sh
+README.md
+LICENSE
