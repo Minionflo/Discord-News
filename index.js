@@ -49,7 +49,7 @@ function cmd_news(msg, args) {
         .setDescription(args.join(" "))
         .setFooter(msg.author.tag, msg.author.avatarURL())
         .setTimestamp()
-    client.channels.cache.get(config_channel).send("<@&" + config_pingrole + ">", emb).then(p => { if(config_post == "true") {p.crosspost()}; })
+    client.channels.cache.get(config_channel).send("<@&" + config_pingrole + ">", emb).then(p => { if(config_post == "true" && msg.channel.type == "news") {p.crosspost()}; })
     console.log("Worked")
 }
 
