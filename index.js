@@ -41,7 +41,7 @@ var cmdmap = {
 
 function cmd_news(msg, args) {
     if(msg.member.roles.cache.has(config_role) == false) {console.log(`Error: ${msg.author.tag} doesnt have the role`); return false}
-    if(msg.channel.id == config_botchannel) {console.log(`Error: ${msg.author.tag} used the wrong channel`); return false}
+    if(msg.channel.id != config_botchannel) {console.log(`Error: ${msg.author.tag} used the wrong channel`); return false}
     var emb = new MessageEmbed()
         .setTitle('News')
         .setColor('FAA81A')
