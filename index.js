@@ -10,6 +10,7 @@ var config_statustype = process.env.STATUSTYPE
 var config_botchannel = process.env.BOTCHANNEL
 var config_pingrole = process.env.PINGROLE
 var config_prefix = process.env.PREFIX
+var config_post = process.env.POST
 
 var client = new Discord.Client()
 
