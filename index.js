@@ -3,15 +3,26 @@ const { MessageEmbed } = require('discord.js')
 
 
 var config_token = process.env.TOKEN
-var config_owner = process.env.OWNER   // 448138061440614400
-var config_channel = process.env.CHANNEL  // 609677269366997014
+var config_role = process.env.ROLE
+var config_channel = process.env.CHANNEL
 var config_status = process.env.STATUS
-var config_statustype = process.env.STATUSTYPE  // WATCHING
-var config_botchannel = process.env.BOTCHANNEL  //589823584646725682
-var config_pingrole = process.env.PINGROLE   // <@&662318067874791439>
-var config_prefix = process.env.PREFIX   //!
+var config_statustype = process.env.STATUSTYPE
+var config_botchannel = process.env.BOTCHANNEL
+var config_pingrole = process.env.PINGROLE
+var config_prefix = process.env.PREFIX
 
 var client = new Discord.Client()
+
+if(process.argv.slice(2) == "test") {
+    var secret = fs.readFileSync('secret', 'utf8').split(/\r?\n/)
+    secret.forEach(function(line) {
+        line = line.split("=")
+        var name = line[0]
+        var value = line[1]
+        str = name+' = '+value;
+        eval(str)
+    })
+}
 
 client.on('ready', () => {
     activity()
@@ -29,24 +40,16 @@ var cmdmap = {
 }
 
 function cmd_news(msg, args) {
-    if (msg.author.id == config_owner) {
-        if (msg.channel.id == config_botchannel) {
-            var emb = new MessageEmbed()
-                .setTitle('News')
-                .setColor('FAA81A')
-                .setDescription(args.join(" "))
-                .setFooter(msg.author.tag, msg.author.avatarURL())
-                .setTimestamp()
-            client.channels.cache.get(config_channel).send(config_pingrole, emb).then(p => { p.crosspost(); })
-        console.log("Worked")
-        } else {
-            msg.delete()
-            console.log("Error")
-        }
-    } else {
-        msg.delete()
-        console.log("Error")
-    }
+    if(msg.member.roles.cache.has(config_role) == false) {console.log(`Error: ${msg.user.tag} doesnt have the role`); return false}
+    if(msg.channel.id == config_botchannel) {console.log(`Error: ${msg.user.tag} used the wrong channel`); return false}
+    var emb = new MessageEmbed()
+        .setTitle('News')
+        .setColor('FAA81A')
+        .setDescription(args.join(" "))
+        .setFooter(msg.author.tag, msg.author.avatarURL())
+        .setTimestamp()
+    client.channels.cache.get(config_channel).send("<@&" + config_pingrole + ">", emb).then(p => { if(config_post == "true") {p.crosspost()}; })
+    console.log("Worked")
 }
 
 client.on('message', (msg) => {
